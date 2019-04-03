@@ -1,3 +1,6 @@
+#ifndef TXP_ELAPSED_TIME_HPP
+#define TXP_ELAPSED_TIME_HPP
+
 #include <chrono>
 
 namespace txp {
@@ -39,3 +42,5 @@ public:
   }
 };
 }
+
+#endif
