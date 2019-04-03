@@ -1,9 +1,9 @@
-# Basic 2 Phase Locking
+# Transaction Practices
 ## Build
 
 ```bash
 $ git clone <repoUrl> --recursive
-$ cd basic-two-phase-locking
+$ cd tx-practice
 $ mkdir build
 $ cd build
 $ cmake .. \
