@@ -73,12 +73,11 @@ target_link_libraries(txp-deps INTERFACE
 # ----------------------------------------------------------------------------
 #                         Build! (Change as needed)
 # ----------------------------------------------------------------------------
-add_executable(b2pl src/b2pl.cpp)   # Name of exec. and location of file.
-
-target_include_directories(b2pl
+add_library(txp INTERFACE)
+target_include_directories(txp
   # Used when building this target:
-  PRIVATE
-  "${TXP_INCLUDE_DIRS}"
+  # PRIVATE
+  # "${TXP_INCLUDE_DIRS}"
   # Used by other targets in this project
   INTERFACE
   $<BUILD_INTERFACE:${TXP_INCLUDE_DIRS}>
@@ -87,23 +86,26 @@ target_include_directories(b2pl
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
 
+add_executable(b2pl src/b2pl.cpp)   # Name of exec. and location of file.
 target_link_libraries(b2pl
   PRIVATE
+  txp
   txp-deps)
 
 # ----------------------------------------------------------------------------
 #                       Make Tests (no change needed).
 # ----------------------------------------------------------------------------
 if(BUILD_TESTING)
+  enable_testing()
   add_executable(${TXP_TEST_MAIN} ${TXP_TESTFILES})
   target_link_libraries(${TXP_TEST_MAIN}
     PRIVATE
+    txp
     txp-deps
     gtest
     stdc++fs)
-  add_test(unit_tests ${PROJECT_BINARY_DIR}/${TEST_MAIN})
+  add_test(unit_tests ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TXP_TEST_MAIN})
 endif()
-
 
 # ----------------------------------------------------------------------------
 #                            Misc (no change needed).
