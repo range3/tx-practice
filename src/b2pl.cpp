@@ -6,6 +6,8 @@
 #include <array>
 #include <chrono>
 
+#include "txp/elapsed_time.hpp"
+
 struct item {
   int val;
   std::mutex mutex;
@@ -21,7 +23,7 @@ int main(int argc, char* argv[]) {
   std::vector<std::thread> workers;
   std::array<item, 100> items;
 
-  auto begin = std::chrono::high_resolution_clock::now();
+  txp::elapsed_time t;
 
   for(int i = 0; i < nthreads; ++i) {
     workers.emplace_back([=, &items](){
@@ -46,10 +48,9 @@ int main(int argc, char* argv[]) {
     worker.join();
   }
 
-  auto end = std::chrono::high_resolution_clock::now();
-  auto elapsed_time = std::chrono::duration_cast<std::chrono::duration<double>>(end - begin);
+  t.freeze();
 
-  std::cout << "Elapsed time (sec): " << elapsed_time.count() << std::endl;
-  std::cout << "Throuput (trans/sec): " << nthreads / elapsed_time.count() << std::endl;
+  std::cout << "Elapsed time (sec): " << t.sec() << std::endl;
+  std::cout << "Throuput (trans/sec): " << nthreads / t.sec() << std::endl;
   return 0;
 }
